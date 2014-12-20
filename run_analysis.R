@@ -12,13 +12,13 @@ srcUrl <-
 zipFile <- paste(dir, "dataset.zip", sep="/")
 uciDir <- "UCI HAR Dataset"
 
-if (!file.exists(dir)) 
-    dir.create(dir)
-if (!file.exists(zipFile))
-    download.file(srcUrl, zipFile, method="curl", quiet=T)
-if (!file.exists(uciDir))
+if (!file.exists(uciDir)) {
+    if (!file.exists(dir)) 
+        dir.create(dir)
+    if (!file.exists(zipFile))
+        download.file(srcUrl, zipFile, method="curl", quiet=T)
     unzip(zipFile)   
-
+}
 
 # 2. Read the source data.
 #
