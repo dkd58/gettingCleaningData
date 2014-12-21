@@ -87,18 +87,28 @@ data <- cbind(Subject=allSubjects$SubjectID,
 
 
 # 4. Produce the tidy data set for step 5.
-
+# Output will be stored in this file in the current working directory.
 tidyFile <- "tidy.txt"
 
+# Split the data by subject and activity, leave out the non-numerics column.
 dataSplit <- split(data[,c(1,3:69)], list(data$Subject, data$Activity))
+
+# Calculate column means for the split data set and collect all of the 
+# data sets back into a data.frame. Also fix the different mean values to
+# be in columns instead of rows by transposing the data.frame.
 dataMeans <- data.frame(t(data.frame(lapply(dataSplit, colMeans))))
+
+# Add the descriptive activity names back into the data.frame, thus
+# constructing the final tidy data set.
 dataActivityNames <- factor(dataMeans[,2], 
                             levels=activities$ID, 
                             labels=activities$Name)
 tidy <- cbind(Subject=dataMeans[,1],
               Activity=dataActivityNames,
               dataMeans[,3:68])
+
+# Save the tidy data set as required.
 write.table(tidy, tidyFile, row.names=F)
 
-# Read back in:
+# To read the tidy data set back in use:
 # tidy <- read.table("tidy.txt", header=T)
