@@ -35,7 +35,8 @@ The data set has also been split randomly into a training and a test dataset.
 This (pre-processed) source data is transformed by the R script
 **run_analysis.R** into two sets of tidy data.
 The first part of data transformation re-constructs a tidy sub-set of data from
-these separate data frames.
+these separate data frames. The second part of transformation uses that tidy
+sub-set and produces average values for its observations.
 
 
 ### Construction of a tidy data sub-set
@@ -44,7 +45,11 @@ The first transformation step re-combines the training and test data sets by
 appending the rows of each to form three completed data.frames.
 
 The second step extracts only the mean and standard deviation columns from
-the combined sensor data set.
+the combined sensor data set. This selection is limited to the variables
+where the mean is determined for several observations, but not the variables
+that represent additional signal averages labeled also as "...Mean". Thus,
+mean and standard deviation (std) are present in pairs for each sensor
+measurement.
 
 Column names that give the name of the aggregated sensor value are added to
 the data set in the third step.
@@ -64,7 +69,26 @@ of 69 variables. These are
 within the data set.
 * **Activity**: the descriptive activity name executed in this observation.
 * **ActivityID**: the numeric activity ID for later reference.
-* 66 sensor columns.
+* **66 sensor columns**. These consist of 3-axial data with three column
+names ending X, Y and Z, and scalar magnitude data ending in Mag. For each
+of these sensors, a mean and std value is provided.
+  * tBodyAcc-XYZ
+  * tGravityAcc-XYZ
+  * tBodyAccJerk-XYZ
+  * tBodyGyro-XYZ
+  * tBodyGyroJerk-XYZ
+  * tBodyAccMag
+  * tGravityAccMag
+  * tBodyAccJerkMag
+  * tBodyGyroMag
+  * tBodyGyroJerkMag
+  * fBodyAcc-XYZ
+  * fBodyAccJerk-XYZ
+  * fBodyGyro-XYZ
+  * fBodyAccMag
+  * fBodyAccJerkMag
+  * fBodyGyroMag
+  * fBodyGyroJerkMag
 
 
 ### Derivation of mean sensor data by subject and activity
