@@ -77,9 +77,28 @@ allActivities$Name <- factor(allActivities$ID,
                              levels=activities$ID, 
                              labels=activities$Name)
 
-# 3.5 Create the tidy data set.
+# 3.5 Create the tidy data set (step 4).
 # Combine the subjects, activities and the filtered data set to
 # form the tidy data set.
 data <- cbind(Subject=allSubjects$SubjectID, 
               Activity=allActivities$Name, 
+              ActivityID=allActivities$ID,
               allData)
+
+
+# 4. Produce the tidy data set for step 5.
+
+tidyFile <- "tidy.txt"
+
+dataSplit <- split(data[,c(1,3:69)], list(data$Subject, data$Activity))
+dataMeans <- data.frame(t(data.frame(lapply(dataSplit, colMeans))))
+dataActivityNames <- factor(dataMeans[,2], 
+                            levels=activities$ID, 
+                            labels=activities$Name)
+tidy <- cbind(Subject=dataMeans[,1],
+              Activity=dataActivityNames,
+              dataMeans[,3:68])
+write.table(tidy, tidyFile, row.names=F)
+
+# Read back in:
+# tidy <- read.table("tidy.txt", header=T)
